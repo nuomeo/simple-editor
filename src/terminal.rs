@@ -1,4 +1,3 @@
-use std::fmt::Display;
 use std::io::{stdout, Write};
 
 use crossterm::cursor::{Hide, MoveTo, Show};
@@ -53,7 +52,7 @@ impl Terminal {
         Self::queue_command(Clear(ClearType::CurrentLine))
     }
 
-    pub fn print<T: Display>(msg: T) -> Result<(), std::io::Error> {
+    pub fn print(msg: &str) -> Result<(), std::io::Error> {
         Self::queue_command(Print(msg))?;
         Ok(())
     }
