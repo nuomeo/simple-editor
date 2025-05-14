@@ -16,7 +16,7 @@ pub struct Location {
 pub struct Editor {
     should_quit: bool,
     location: Location,
-    viewer: View
+    viewer: View,
 }
 
 impl Editor {
@@ -24,11 +24,19 @@ impl Editor {
         Editor {
             should_quit: false,
             location: Location::default(),
-            viewer: View::default()
+            viewer: View::default(),
+        }
+    }
+
+    fn handle_args(&mut self) {
+        let args: Vec<String> = std::env::args().collect();
+        if let Some(filename) = args.get(1) {
+            self.viewer.load(filename);
         }
     }
 
     pub fn run(&mut self) {
+        self.handle_args();
         Terminal::initialize().unwrap();
         let result = self.repl();
         Terminal::terminate().unwrap();
@@ -48,7 +56,7 @@ impl Editor {
         Ok(())
     }
 
-    fn refresh_screen(&self) -> Result<(), std::io::Error> {
+    fn refresh_screen(&mut self) -> Result<(), std::io::Error> {
         Terminal::hide_cursor()?;
         Terminal::move_cursor_to(Position::default())?;
         if self.should_quit {
