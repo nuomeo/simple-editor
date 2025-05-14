@@ -66,7 +66,7 @@ impl Editor {
         Ok(())
     }
 
-    fn move_cursor(&mut self, code: KeyCode) -> Result<(), std::io::Error> {
+    fn move_location(&mut self, code: KeyCode) -> Result<(), std::io::Error> {
         let Location { mut x, mut y } = self.location;
         let Size { width, height } = Terminal::size()?;
         match code {
@@ -113,7 +113,7 @@ impl Editor {
                     self.should_quit = true;
                 }
                 Left | Right | Up | Down | Home | End | PageDown | PageUp => {
-                    self.move_cursor(*code)?;
+                    self.move_location(*code)?;
                 }
                 _ => (),
             }
