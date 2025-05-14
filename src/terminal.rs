@@ -11,13 +11,13 @@ pub struct Terminal {}
 
 #[derive(Copy, Clone)]
 pub struct Size {
-    pub height: u16,
-    pub width: u16,
+    pub height: usize,
+    pub width: usize,
 }
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Default)]
 pub struct Position {
-    pub x: u16,
-    pub y: u16,
+    pub x: usize,
+    pub y: usize,
 }
 
 impl Terminal {
@@ -59,13 +59,13 @@ impl Terminal {
     }
 
     pub fn move_cursor_to(pos: Position) -> Result<(), std::io::Error> {
-        Self::queue_command(MoveTo(pos.x, pos.y))?;
+        Self::queue_command(MoveTo(pos.x as u16, pos.y as u16))?;
         Ok(())
     }
 
     pub fn size() -> Result<Size, std::io::Error> {
         let (width, height) = size()?;
-        Ok(Size { height, width })
+        Ok(Size { height: height.into(), width: width.into()})
     }
 
     pub fn execute() -> Result<(), std::io::Error> {
